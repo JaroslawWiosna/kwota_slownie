@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kwota w złotych</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .result {
+            font-size: 18px;
+            margin-top: 10px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .copy-icon {
+            cursor: pointer;
+            margin-left: 10px;
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Kwota w złotych</h1>
+        <input type="text" id="amount" placeholder="Wpisz kwotę w zł" oninput="convertToWords()">
+        <div class="result" id="result"></div>
+        <br />
+        <div>
+            <span id="resultText"></span>
+            <svg class="copy-icon" onclick="copyToClipboard()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M16 1H6C4.89 1 4 1.89 4 3v14c0 1.11.89 2 2 2h10c1.11 0 2-.89 2-2V5l-6-4zm0 2.5L20.5 5v12H6V3h10z"/>
+            </svg>
+        </div>
+    </div>
+    <script>
+        function convertToWords() {
+            const amountInput = document.getElementById('amount').value;
+            const resultDiv = document.getElementById('result');
+            const amount = parseFloat(amountInput.replace(',', '.'));
+    
+            if (isNaN(amount) || amount < 0 || amount > 1000000) {
+                resultDiv.innerHTML = '';
+                return;
+            }
+    
+            const words = numberToWords(amount);
+            resultDiv.innerHTML = `${amountInput} zł (${words})`;
+        }
+    
+        function numberToWords(x) {
+            const units = [
+                '', 'jeden', 'dwa', 'trzy', 'cztery', 'pięć', 'sześć', 'siedem', 'osiem', 'dziewięć',
+                'dziesięć', 'jedenaście', 'dwanaście', 'trzynaście', 'czternaście', 'piętnaście', 'szesnaście',
+                'siedemnaście', 'osiemnaście', 'dziewiętnaście'
+            ];
+            const tens = ['', '', 'dwadzieścia', 'trzydzieści', 'czterdzieści', 'pięćdziesiąt', 'sześćdziesiąt',
+                'siedemdziesiąt', 'osiemdziesiąt', 'dziewięćdziesiąt'];
+            const hundreds = ['', 'sto', 'dwieście', 'trzysta', 'czterysta', 'pięćset', 'sześćset', 'siedemset',
+                'osiemset', 'dziewięćset'];
+            const thousands_units = [
+                '', 
+                'jeden tysiąc', 
+                'dwa tysiące', 
+                'trzy tysiące', 
+                'cztery tysiące', 
+                'pięć tysięcy', 
+                'sześć tysięcy', 
+                'siedem tysięcy', 
+                'osiem tysięcy', 
+                'dziewięć tysięcy',
+                'dziesięć tysięcy', 
+                'jedenaście tysięcy', 
+                'dwanaście tysięcy', 
+                'trzynaście tysięcy', 
+                'czternaście tysięcy', 
+                'piętnaście tysięcy', 
+                'szesnaście tysięcy', 
+                'siedemnaście tysięcy', 
+                'osiemnaście tysięcy', 
+                'dziewiętnaście tysięcy',
+                'dwadzieścia tysięcy', 
+                'dwadzieścia jeden tysięcy', 
+                'dwadzieścia dwa tysiące', 
+                'dwadzieścia trzy tysiące', 
+                'dwadzieścia cztery tysiące', 
+                'dwadzieścia pięć tysięcy', 
+                'dwadzieścia sześć tysięcy', 
+                'dwadzieścia siedem tysięcy', 
+                'dwadzieścia osiem tysięcy', 
+                'dwadzieścia dziewięć tysięcy',
+                'trzydzieści tysięcy', 
+                'trzydzieści jeden tysięcy', 
+                'trzydzieści dwa tysiące', 
+                'trzydzieści trzy tysiące', 
+                'trzydzieści cztery tysiące', 
+                'trzydzieści pięć tysięcy', 
+                'trzydzieści sześć tysięcy', 
+                'trzydzieści siedem tysięcy', 
+                'trzydzieści osiem tysięcy', 
+                'trzydzieści dziewięć tysięcy',
+                'czterdzieści tysięcy', 
+                'czterdzieści jeden tysięcy', 
+                'czterdzieści dwa tysiące', 
+                'czterdzieści trzy tysiące', 
+                'czterdzieści cztery tysiące', 
+                'czterdzieści pięć tysięcy', 
+                'czterdzieści sześć tysięcy', 
+                'czterdzieści siedem tysięcy', 
+                'czterdzieści osiem tysięcy', 
+                'czterdzieści dziewięć tysięcy',
+                'pięćdziesiąt tysięcy', 
+                'pięćdziesiąt jeden tysięcy', 
+                'pięćdziesiąt dwa tysiące', 
+                'pięćdziesiąt trzy tysiące', 
+                'pięćdziesiąt cztery tysiące', 
+                'pięćdziesiąt pięć tysięcy', 
+                'pięćdziesiąt sześć tysięcy', 
+                'pięćdziesiąt siedem tysięcy', 
+                'pięćdziesiąt osiem tysięcy', 
+                'pięćdziesiąt dziewięć tysięcy', 
+                'sześćdziesiąt tysięcy', 
+                'sześćdziesiąt jeden tysięcy', 
+                'sześćdziesiąt dwa tysiące', 
+                'sześćdziesiąt trzy tysiące', 
+                'sześćdziesiąt cztery tysiące', 
+                'sześćdziesiąt pięć tysięcy', 
+                'sześćdziesiąt sześć tysięcy', 
+                'sześćdziesiąt siedem tysięcy', 
+                'sześćdziesiąt osiem tysięcy', 
+                'sześćdziesiąt dziewięć tysięcy',
+                'siedemdziesiąt tysięcy', 
+                'siedemdziesiąt jeden tysięcy', 
+                'siedemdziesiąt dwa tysiące', 
+                'siedemdziesiąt trzy tysiące', 
+                'siedemdziesiąt cztery tysiące', 
+                'siedemdziesiąt pięć tysięcy', 
+                'siedemdziesiąt sześć tysięcy', 
+                'siedemdziesiąt siedem tysięcy', 
+                'siedemdziesiąt osiem tysięcy', 
+                'siedemdziesiąt dziewięć tysięcy',
+                'osiemdziesiąt tysięcy', 
+                'osiemdziesiąt jeden tysięcy', 
+                'osiemdziesiąt dwa tysiące', 
+                'osiemdziesiąt trzy tysiące', 
+                'osiemdziesiąt cztery tysiące', 
+                'osiemdziesiąt pięć tysięcy', 
+                'osiemdziesiąt sześć tysięcy', 
+                'osiemdziesiąt siedem tysięcy', 
+                'osiemdziesiąt osiem tysięcy', 
+                'osiemdziesiąt dziewięć tysięcy',
+                'dziewięćdziesiąt tysięcy', 
+                'dziewięćdziesiąt jeden tysięcy', 
+                'dziewięćdziesiąt dwa tysiące', 
+                'dziewięćdziesiąt trzy tysiące', 
+                'dziewięćdziesiąt cztery tysiące', 
+                'dziewięćdziesiąt pięć tysięcy', 
+                'dziewięćdziesiąt sześć tysięcy', 
+                'dziewięćdziesiąt siedem tysięcy', 
+                'dziewięćdziesiąt osiem tysięcy', 
+                'dziewięćdziesiąt dziewięć tysięcy'
+            ];
+    
+            let words = '';
+    
+            const thousandsPart = Math.floor(x / 1000);
+            const hundredsPart = Math.floor(x%1000 / 100);
+            const tensPart = Math.floor(((x%1000) % 100) / 10);
+            const unitsPart = Math.floor(x % 10);
+            const integerPart = Math.floor(x);
+            const fractionalPart = Math.round((x - integerPart) * 100);
+
+    
+            if (thousandsPart > 0) {
+                words += thousands_units[thousandsPart] + ' ';
+            }
+            if (hundredsPart > 0) {
+                words += hundreds[hundredsPart] + ' ';
+            }    
+            if (tensPart > 1) {
+                words += tens[tensPart] + ' ';
+                words += units[unitsPart] + ' ';
+            } else if (tensPart === 1) {
+                words += units[10 + unitsPart] + ' ';
+            } else {
+                words += units[unitsPart] + ' ';
+            }
+
+            if (tensPart === 1 && unitsPart > 1 && unitsPart < 5) {
+                words += 'złotych';
+            } else if (tensPart === 0 && unitsPart === 1) {
+                words += 'złoty';
+            } else if (unitsPart > 1 && unitsPart < 5) {
+                words += 'złote';
+            } else {
+                words += 'złotych';
+            }
+
+            if (fractionalPart > 0) {
+                words += ` ${fractionalPart < 10 ? '0' : ''}${fractionalPart}/100`;
+            }
+
+            return words.trim();
+        }
+        function copyToClipboard() {
+            const resultText = document.getElementById('result').innerText;
+            if (resultText) {
+                navigator.clipboard.writeText(resultText).then(() => {
+                    alert('Skopiowano do schowka: ' + resultText);
+                }).catch(err => {
+                    console.error('Błąd podczas kopiowania: ', err);
+                });
+            }
+        }        
+    </script>    
+</body>
+</html>
